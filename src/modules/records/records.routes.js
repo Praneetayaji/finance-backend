@@ -1,0 +1,12 @@
+const express = require("express");
+const { authenticate } = require("../../middleware/auth");
+const { requireMinRole, requireRole } = require("../../middleware/rbac");
+const { getRecords, getRecordById, createRecord, updateRecord, deleteRecord } = require("./records.controller");
+const router = express.Router();
+router.use(authenticate);
+router.get("/", requireMinRole("ANALYST"), getRecords);
+router.get("/:id", requireMinRole("ANALYST"), getRecordById);
+router.post("/", requireMinRole("ANALYST"), createRecord);
+router.patch("/:id", requireMinRole("ANALYST"), updateRecord);
+router.delete("/:id", requireRole("ADMIN"), deleteRecord);
+module.exports = router;

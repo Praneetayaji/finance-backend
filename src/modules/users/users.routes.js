@@ -1,0 +1,11 @@
+const express = require("express");
+const { authenticate } = require("../../middleware/auth");
+const { requireRole } = require("../../middleware/rbac");
+const { getAllUsers, getUserById, updateUserRole, updateUserStatus } = require("./users.controller");
+const router = express.Router();
+router.use(authenticate, requireRole("ADMIN"));
+router.get("/", getAllUsers);
+router.get("/:id", getUserById);
+router.patch("/:id/role", updateUserRole);
+router.patch("/:id/status", updateUserStatus);
+module.exports = router;
